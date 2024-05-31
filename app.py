@@ -4,6 +4,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
+from helpers.apply import apply_adaboost, apply_knn, apply_logistic_regression, apply_svm, apply_random_forest, apply_nn, apply_decision_tree
 
 
 def apply_xgb(X_train, y_train, X_test, y_test):
@@ -45,8 +46,6 @@ def init():
 
     data = pd.concat(dataframes, ignore_index=True)
 
-    print(data)
-
     selected_features = data[[
         'meanPupilDiameter',
         'startSaccadeX',
@@ -54,6 +53,10 @@ def init():
         'endSaccadeX',
         'endSaccadeY',
         'fake_news']]
+
+    # drop NAN values (this will drop all events that are not saccades)
+    selected_features = selected_features.dropna()
+    print(selected_features)
 
     target_variable = selected_features['fake_news']
 
@@ -72,6 +75,13 @@ def init():
         selected_features, target_variable, test_size=0.2, random_state=42)
 
     apply_xgb(X_train, y_train, X_test, y_test)
+    # apply_decision_tree(X_train, y_train, X_test, y_test)
+    # apply_svm(X_train, y_train, X_test, y_test)
+    # apply_adaboost(X_train, y_train, X_test, y_test)
+    # apply_knn(X_train, y_train, X_test, y_test)
+    # apply_logistic_regression(X_train, y_train, X_test, y_test)
+    # apply_random_forest(X_train, y_train, X_test, y_test)
+    # apply_nn(X_train, y_train, X_test, y_test)
 
 
 init()
